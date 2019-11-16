@@ -44,7 +44,7 @@ def load_data_and_labels(positive_data_file, negative_data_file):
     negative_labels = [[1, 0] for _ in negative_examples]
     print(negative_labels[0])
     y = np.concatenate([positive_labels, negative_labels], 0)
-    print(y[0])
+    rintp(y[0])
     return [x_text, y]
 
 

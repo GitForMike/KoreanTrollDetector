@@ -5,8 +5,8 @@ import numpy as np
 import os
 import time
 import datetime
-import data_helpers
-from text_cnn import TextCNN
+from EvilTest import data_helpers
+#from text_cnn import TextCNN
 from tensorflow.contrib import learn
 import csv
 import sys
@@ -21,44 +21,42 @@ class EvilTest:
         return self.result
 
 
-def test():
-    #return "test"
-
+def test(keyword):
     # Parameters
     # ==================================================
 
+    #tf.flags.DEFINE_string("checkpoint_dir", "./EvilTest/runs/1573754967/checkpoints/", "Data source for the positive data.")
+    
     # Data Parameters
-    #tf.flags.DEFINE_string("positive_data_file", "./data/rt-polaritydata/rt-polarity.pos", "Data source for the positive data.")
-    #tf.flags.DEFINE_string("negative_data_file", "./data/rt-polaritydata/rt-polarity.neg", "Data source for the negative data.")
+    tf.flags.DEFINE_string("positive_data_file", "./EvilTest/data/rt-polaritydata/rt-polarity.pos", "Data source for the positive data.")
+    tf.flags.DEFINE_string("negative_data_file", "./EvilTest/data/rt-polaritydata/rt-polarity.neg", "Data source for the negative data.")
 
     # Eval Parameters
     tf.flags.DEFINE_integer("batch_size", 64, "Batch Size (default: 64)")
-    tf.flags.DEFINE_string("checkpoint_dir", "", "Checkpoint directory from training run")
+    tf.flags.DEFINE_string("checkpoint_dir", "./EvilTest/runs/1573754967/checkpoints/", "Checkpoint directory from training run")
     tf.flags.DEFINE_boolean("eval_train", False, "Evaluate on all training data")
 
     # Misc Parameters
     tf.flags.DEFINE_boolean("allow_soft_placement", True, "Allow device soft device placement")
     tf.flags.DEFINE_boolean("log_device_placement", False, "Log placement of ops on devices")
-
-
     FLAGS = tf.flags.FLAGS
-    #FLAGS._parse_flags()
-    FLAGS(sys.argv)
     print("\nParameters:")
     for attr, value in sorted(FLAGS.__flags.items()):
         print("{}={}".format(attr.upper(), value))
     print("")
 
-    # CHANGE THIS: Load data. Load your own data here
-    if FLAGS.eval_train:
-        x_raw, y_test = data_helpers.load_data_and_labels(FLAGS.positive_data_file, FLAGS.negative_data_file)
-        y_test = np.argmax(y_test, axis=1)
-    else:
-        x_raw = ["a masterpiece four years in the making", "everything is off."]
-        y_test = [1, 0]
+    #x_raw, y_test = data_helpers.load_data_and_labels(FLAGS.positive_data_file, FLAGS.negative_data_file)
+    #print(x_raw)
+    #print(y_test)
+    x_raw = [keyword]
+    y = [[1,0]]
+    y_test = np.concatenate([y], 0)
+    print(y_test)
+    y_test = np.argmax(y_test, axis=1)
 
     kkma=Kkma() 
     x_raw=[" ".join(kkma.morphs(x2)) for x2 in x_raw]
+
 
     # Map data into vocabulary
     vocab_path = os.path.join(FLAGS.checkpoint_dir, "..", "vocab")
@@ -71,6 +69,9 @@ def test():
     # ==================================================
     checkpoint_file = tf.train.latest_checkpoint(FLAGS.checkpoint_dir)
     graph = tf.Graph()
+
+
+
     with graph.as_default():
         session_conf = tf.ConfigProto(
         allow_soft_placement=FLAGS.allow_soft_placement,
@@ -97,17 +98,10 @@ def test():
 
             for x_test_batch in batches:
                 batch_predictions = sess.run(predictions, {input_x: x_test_batch, dropout_keep_prob: 1.0})
+                print(batch_predictions)
                 all_predictions = np.concatenate([all_predictions, batch_predictions])
 
-    # Print accuracy if y_test is defined
-    if y_test is not None:
-        correct_predictions = float(sum(all_predictions == y_test))
-        print("Total number of test examples: {}".format(len(y_test)))
-        print("Accuracy: {:g}".format(correct_predictions/float(len(y_test))))
 
-    # Save the evaluation to a csv
-    predictions_human_readable = np.column_stack((np.array(x_raw), all_predictions))
-    out_path = os.path.join(FLAGS.checkpoint_dir, "..", "prediction.csv")
-    print("Saving evaluation to {0}".format(out_path))
-    with open(out_path, 'w',encoding='utf-8') as f:
-        csv.writer(f).writerows(predictions_human_readable)
+
+    return "text"
+

@@ -21,7 +21,7 @@ class MyWindow(QMainWindow):
     def btn1_clicked(self):
         #QMessageBox.about(self, "message", "clicked")
         self.lb.setText("Processing...")
-        self.lb.setText(ET.test())
+        self.lb.setText(ET.test("test"))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
