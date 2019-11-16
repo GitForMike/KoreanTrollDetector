@@ -11,10 +11,11 @@ if __name__ == "__main__":
         if 'evil' not in i.keys():
             pass
         elif i['evil']=="0":
+            #f.write(i["_id"]["$oid"]+" "+i['text']+'\n')
             f.write(i['text']+'\n')
         elif i['evil']=="1":
+            #f2.write(i["_id"]["$oid"]+" "+i['text']+'\n')
             f2.write(i['text']+'\n')
-
         if 'abuse' not in i.keys():
             pass
         elif i['abuse']=="0":

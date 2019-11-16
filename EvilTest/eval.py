@@ -10,6 +10,7 @@ from text_cnn import TextCNN
 from tensorflow.contrib import learn
 import csv
 import sys
+from konlpy.tag import Kkma 
 
 # Parameters
 # ==================================================
@@ -43,6 +44,9 @@ if FLAGS.eval_train:
 else:
     x_raw = ["a masterpiece four years in the making", "everything is off."]
     y_test = [1, 0]
+
+kkma=Kkma() 
+x_raw=[" ".join(kkma.morphs(x2)) for x2 in x_raw]
 
 # Map data into vocabulary
 vocab_path = os.path.join(FLAGS.checkpoint_dir, "..", "vocab")

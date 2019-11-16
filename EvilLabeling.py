@@ -29,3 +29,7 @@ if __name__ == "__main__":
             elif stdin =="2":
                 print("skip")
                 break
+            elif stdin =="4":
+                data={'evil':'4'}
+                DBHelper.UpdateDB(i['_id']['$oid'],data)
+                break

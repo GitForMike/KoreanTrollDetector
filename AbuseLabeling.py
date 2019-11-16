@@ -1,7 +1,16 @@
 import DBHelper
+import argparse
+import sys
 
 if __name__ == "__main__":
-    for i in DBHelper.GetDB(None):
+    parser = argparse.ArgumentParser(description='input startPage, endPage')
+    parser.add_argument('--startPage', type=int,
+                    help='input start page')
+    parser.add_argument('--endPage', type=int,
+                    help='input start page')
+    args = parser.parse_args()
+    
+    for i in DBHelper.GetDB(args.startPage,args.endPage):
         if 'abuse' in i.keys():
             continue
         print(i['text'])
