@@ -3,7 +3,7 @@ import json
 import argparse
 
 #URL = 'http://15.165.19.243:5000/' 
-URL = 'http://10.255.55.43:5000/' 
+URL = 'http://hyem2.iptime.org:5000/' 
 
 def UpdateDB(ID,data):
     updateURL = URL+"reply/"+ID

@@ -17,11 +17,12 @@ class MyWindow(QMainWindow):
         self.lb = QLabel(self)
         self.lb.move(20,100)
         #le.textChanged.connect(lb.setText)
+        self.ET=ET.EvilTest()
        
     def btn1_clicked(self):
         #QMessageBox.about(self, "message", "clicked")
         self.lb.setText("Processing...")
-        self.lb.setText(ET.test("test"))
+        self.lb.setText(self.ET.test(self.le.text()))
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
